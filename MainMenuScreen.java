@@ -1,10 +1,10 @@
-package com.blub.lwjgl3.Screens;
+package com.blub;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.blub.lwjgl3.Blub_Blub;
+import com.blub.Screens.PetScreen;
 
 public class MainMenuScreen implements Screen {
 
@@ -15,8 +15,8 @@ public class MainMenuScreen implements Screen {
     private static final int PLAY_BUTTON_HEIGHT = 216;
     private static final int EXIT_BUTTON_WIDTH = 216;
     private static final int EXIT_BUTTON_HEIGHT = 108;
-    private static final int EXIT_BUTTON_Y = 108;
-    private static final int PLAY_BUTTON_Y = 540;
+    private static final int TITLE_WIDTH = 810;
+    private static final int TITLE_HEIGHT = 280;
 
     //Texture objects for images
     Texture playButtonActive;
@@ -29,11 +29,11 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         //Start / Exit buttons that will be loaded
-        playButtonActive = new Texture(Gdx.files.internal("blank")); //Image names must be filled
-        playButtonInactive = new Texture(Gdx.files.internal("blank"));
-        exitButtonActive = new Texture(Gdx.files.internal("blank"));
-        exitButtonInactive = new Texture(Gdx.files.internal("blank"));
-        title = new Texture(Gdx.files.internal("blank"));
+        playButtonActive = new Texture(Gdx.files.internal("PlayButtonActive.png")); //Image names must be filled
+        playButtonInactive = new Texture(Gdx.files.internal("PlayButtonInactive.png"));
+        exitButtonActive = new Texture(Gdx.files.internal("ExitButtonActive.png"));
+        exitButtonInactive = new Texture(Gdx.files.internal("ExitButtonInactive.png"));
+        title = new Texture(Gdx.files.internal("BlubBlubTitle.png"));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MainMenuScreen implements Screen {
     //Loads images/Screens
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.5F, 0.5F, 0.5F, 1);
+        Gdx.gl.glClearColor(0.99F, 0.9F, 0.9F, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -55,29 +55,50 @@ public class MainMenuScreen implements Screen {
         //To center an image, image width divided by 2, and subtract the image's width (vice versa height)
         //Y = 0 is at the TOP of the screen
 
-        game.batch.draw(title, (float) Blub_Blub.WIDTH / 2, Blub_Blub.HEIGHT);
+        //Title
+        game.batch.draw(title, (float) Blub_Blub.WIDTH / 2 - TITLE_WIDTH / 2, Blub_Blub.HEIGHT / 2f + TITLE_HEIGHT / 2, TITLE_WIDTH, TITLE_HEIGHT);
 
         //Exit button
-        int x = Blub_Blub.WIDTH / 2 - EXIT_BUTTON_WIDTH / 2;
-        if(Gdx.input.getX() > x && Gdx.input.getX() < x + EXIT_BUTTON_WIDTH && Blub_Blub.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y && Blub_Blub.HEIGHT - Gdx.input.getY() < EXIT_BUTTON_Y + EXIT_BUTTON_HEIGHT) {
-            game.batch.draw(exitButtonActive, (float) Blub_Blub.WIDTH / 2 - EXIT_BUTTON_WIDTH, (float) Blub_Blub.HEIGHT / 2 - EXIT_BUTTON_HEIGHT, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
-            if(Gdx.input.isTouched()){
-                Gdx.app.exit();
+        //Calc the x to center the Exit button horizontally
+        float exitButtonX = Blub_Blub.WIDTH / 2f - EXIT_BUTTON_WIDTH / 2f;
+
+        //Calc the y for Exit button
+        float playButtonY = Blub_Blub.HEIGHT / 2f - PLAY_BUTTON_HEIGHT / 2f;
+        float exitButtonY = playButtonY - PLAY_BUTTON_HEIGHT / 2f - EXIT_BUTTON_HEIGHT;
+
+        //Mouse over Exit button
+        if (Gdx.input.getX() > exitButtonX && Gdx.input.getX() < exitButtonX + EXIT_BUTTON_WIDTH &&
+            Blub_Blub.HEIGHT - Gdx.input.getY() > exitButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
+            < exitButtonY + EXIT_BUTTON_HEIGHT) {
+
+            game.batch.draw(exitButtonActive, exitButtonX, exitButtonY, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
+
+            //Exit button clicked
+            if (Gdx.input.isTouched()) {
+                Gdx.app.exit(); //Closes (exits) game
             }
         } else {
-            game.batch.draw(exitButtonInactive, (float) Blub_Blub.WIDTH / 2 - EXIT_BUTTON_WIDTH, (float) Blub_Blub.HEIGHT / 2 - EXIT_BUTTON_HEIGHT, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
+            game.batch.draw(exitButtonInactive, exitButtonX, exitButtonY, EXIT_BUTTON_WIDTH, EXIT_BUTTON_HEIGHT);
         }
 
         //Play button
-        x = Blub_Blub.WIDTH / 2 - PLAY_BUTTON_WIDTH / 2;
-        if(Gdx.input.getX() > x && Gdx.input.getX() < x + PLAY_BUTTON_WIDTH && Blub_Blub.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y && Blub_Blub.HEIGHT - Gdx.input.getY() < PLAY_BUTTON_Y + PLAY_BUTTON_HEIGHT) {
-            game.batch.draw(playButtonActive, (float) Blub_Blub.WIDTH / 2 - PLAY_BUTTON_WIDTH, (float) Blub_Blub.HEIGHT / 2 - PLAY_BUTTON_HEIGHT, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
-            if(Gdx.input.isTouched()){
+        //Calc x and y positions to center Play button
+        float playButtonX = Blub_Blub.WIDTH / 2f - PLAY_BUTTON_WIDTH / 2f;
+
+        //Mouse over Play button
+        if (Gdx.input.getX() > playButtonX && Gdx.input.getX() < playButtonX + PLAY_BUTTON_WIDTH &&
+            Blub_Blub.HEIGHT - Gdx.input.getY() > playButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
+            < playButtonY + PLAY_BUTTON_HEIGHT) {
+
+            game.batch.draw(playButtonActive, playButtonX, playButtonY, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
+
+            //Play button clicked
+            if (Gdx.input.isTouched()) {
                 this.dispose();
                 game.setScreen(new PetScreen(game));
             }
         } else {
-            game.batch.draw(playButtonInactive, (float) Blub_Blub.WIDTH / 2 - PLAY_BUTTON_WIDTH, (float) Blub_Blub.HEIGHT / 2 - PLAY_BUTTON_HEIGHT, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
+            game.batch.draw(playButtonInactive, playButtonX, playButtonY, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);
         }
         game.batch.end();
     }
