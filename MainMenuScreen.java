@@ -1,14 +1,15 @@
-package com.blub;
+package com.blub.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.blub.Screens.PetScreen;
+import com.blub.Blub_Blub;
 
 public class MainMenuScreen implements Screen {
 
     Blub_Blub game;
+    //Background Music
 
     //Button width-height constants
     private static final int PLAY_BUTTON_WIDTH = 432;
@@ -75,6 +76,9 @@ public class MainMenuScreen implements Screen {
 
             //Exit button clicked
             if (Gdx.input.isTouched()) {
+                game.playClick();
+                this.dispose();
+                game.batch.end();
                 Gdx.app.exit(); //Closes (exits) game
             }
         } else {
@@ -95,6 +99,7 @@ public class MainMenuScreen implements Screen {
             //Play button clicked
             if (Gdx.input.isTouched()) {
                 this.dispose();
+                game.playClick();
                 game.setScreen(new PetScreen(game));
             }
         } else {

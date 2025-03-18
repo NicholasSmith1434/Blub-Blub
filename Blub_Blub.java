@@ -1,28 +1,60 @@
-package com.blub_blub.ver01;
+package com.blub;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.blub_blub.ver01.Screens.*;
-
+import com.blub.Screens.MainMenuScreen;
+import com.blub.Screens.PetScreen;
+import com.blub.Screens.PauseMenuScreen;
+import com.blub.Screens.SaveScreen;
 
 public class Blub_Blub extends Game {
+
+    //Constants of screen size
     public static final int WIDTH = 1080;
     public static final int HEIGHT = 1080;
 
     public SpriteBatch batch;
 
-    private PauseSettings pauseSettings;
+    public static Music backgroundMusic;
+    public static Sound click;
+
+    //private PauseSettings pauseSettings;
     private PauseMenuScreen pauseMenuScreen;
-    private PlayScreen playScreen;
+    private PetScreen petScreen;
     private MainMenuScreen mainMenuScreen;
     private SaveScreen saveScreen;
-    private MusicANDSoundScreen soundScreen;
 
     public final static int MENU = 0;
     public final static int PAUSE = 1;
-    public final static int PLAY = 2;
+    public final static int PET = 2;
     public final static int SOUND = 3;
     public final static int SAVE = 4;
+
+    //Loads Main Menu off the start
+    @Override
+    public void create() {
+        //Load music file (once)
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("LoungeLover.mp3"));
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.45f);
+        backgroundMusic.play();
+
+        //Load SFXs
+        click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
+
+        //pauseSettings = new PauseSettings();
+
+        batch = new SpriteBatch();
+
+        setScreen(new MainMenuScreen(this));
+    }
+
+    //public PauseSettings getPauseSettings(){
+    //    return this.pauseSettings;
+    //}
 
     public void changeScreen(int screen){
         switch(screen){
@@ -34,31 +66,33 @@ public class Blub_Blub extends Game {
                 if(pauseMenuScreen == null) pauseMenuScreen = new PauseMenuScreen(this);
                 this.setScreen(pauseMenuScreen);
                 break;
-            case PLAY:
-                if(playScreen == null) playScreen = new PlayScreen(this);
-                this.setScreen(playScreen);
+            case PET:
+                if(petScreen == null) petScreen = new PetScreen(this);
+                this.setScreen(petScreen);
                 break;
             case SAVE:
                 if(saveScreen == null) saveScreen = new SaveScreen(this);
                 this.setScreen(saveScreen);
                 break;
-            case SOUND:
-                if(soundScreen == null) soundScreen = new MusicANDSoundScreen(this);
-                this.setScreen(playScreen);
-                break;
         }
     }
 
+    public void playClick(){
+        click.play();
+    }
+
     @Override
-    public void create() {
-        batch = new SpriteBatch();
-        this.setScreen(new PauseMenuScreen(this));
-
-        pauseSettings = new PauseSettings();
+    public void render() {
+        super.render();
+        //System.out.print("" + Gdx.graphics.getDeltaTime()); --> Used to count delta time
     }
 
-    public PauseSettings getPauseSettings() {
-        return this.pauseSettings;
+    @Override
+    public void dispose() {
+        backgroundMusic.dispose();
+        click.dispose();
+        batch.dispose();
     }
-
 }
+
+//Delta time should be around 1/FPS (FPS = 30) so roughly 0.033 repeating
