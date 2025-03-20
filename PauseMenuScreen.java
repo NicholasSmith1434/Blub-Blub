@@ -1,9 +1,7 @@
-package com.blub_blub.ver01.Screens;
+package com.blub.Screens;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
+
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.blub_blub.ver01.Blub_Blub;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -11,10 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.blub.Blub_Blub;
 
 
-/** First screen of the application. Displayed after the application is created. */
 public class PauseMenuScreen implements Screen {
     private final Blub_Blub parent;
     private final Stage stage;
@@ -36,13 +33,13 @@ public class PauseMenuScreen implements Screen {
         table.setDebug(true);
         stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("skin2/plain.json"));
+        Skin skin = new Skin(Gdx.files.internal("Skin/glassy-ui.json"));
 
         TextButton exit = new TextButton("EXIT", skin);
         TextButton menu = new TextButton("MENU", skin);
         TextButton save = new TextButton("SAVE", skin);
         TextButton resume = new TextButton("RESUME", skin);
-        TextButton soundPreference = new TextButton("SOUND PREFERENCE", skin);
+//        TextButton soundPreference = new TextButton("SOUND PREFERENCE", skin);
 
 
         table.add(resume).width(980);
@@ -51,8 +48,8 @@ public class PauseMenuScreen implements Screen {
         table.row();
         table.add(menu).fillX().uniformX();
         table.row().pad(11,0,11,0);
-        table.add(soundPreference).fillX().uniformX();
-        table.row();
+//        table.add(soundPreference).fillX().uniformX();
+//        table.row();
         table.add(exit).fillX().uniformX();
 
 
@@ -82,12 +79,12 @@ public class PauseMenuScreen implements Screen {
                 parent.changeScreen(Blub_Blub.MENU);
             }
         });
-        soundPreference.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Blub_Blub.SOUND);
-            }
-        });
+//        soundPreference.addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ChangeEvent event, Actor actor) {
+//                parent.changeScreen(Blub_Blub.SOUND);
+//            }
+//        });
 
 
 
@@ -127,6 +124,5 @@ public class PauseMenuScreen implements Screen {
         stage.dispose();
     }
 }
-
 
 
