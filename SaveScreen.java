@@ -60,7 +60,7 @@ public class SaveScreen implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.9F, 0.9F, 0.9F, 1); // determines background color of the screen
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  // clears the color used in the precious screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  // clears the color used in the previous screen
 
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // helps with the timing of the actors in the stage in this case the table
         stage.draw();  // used to call the table to the stage (stage could be seen to be the same as a screen
