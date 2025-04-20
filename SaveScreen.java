@@ -25,33 +25,33 @@ public class SaveScreen implements Screen {
 
     }
     @Override
-    public void show() {
-        Table table = new Table();
-        table.setSize(2000,1000);
-        table.setFillParent(true);
-        table.setDebug(true);
-        stage.addActor(table);
+    public void show() { 
+        Table table = new Table(); // uses Table from WidgetGroup in LibGDX to create a table layout in the page
+        table.setSize(2000,1000); // sets the size of the table
+        table.setFillParent(true); // used to size the root table to the stage
+        table.setDebug(true); // provides lines to be able to see the alignment from the table, is not necessary just used for debugging 
+        stage.addActor(table); // adds the table to the stage
 
-        Skin skin = new Skin(Gdx.files.internal("skin2/plain.json"));
+        Skin skin = new Skin(Gdx.files.internal("skin2/plain.json")); // creates a new Skin which accepts a json file, which contains different buttons and widgets
 
-        TextButton save1 = new TextButton("SAVE #1", skin);
+        TextButton save1 = new TextButton("SAVE #1", skin);  //creates text buttons using the skin from the json file, and and writes text over button
         TextButton save2 = new TextButton("SAVE #2", skin);
         TextButton save3 = new TextButton("SAVE #3", skin);
         TextButton newSave = new TextButton("NEW SAVE", skin);
 
 
-        table.add(save1).width(980);
-        table.row().pad(11,0,11,0);
-        table.add(save2).fillX().uniformX();
-        table.row();
-        table.add(save3).fillX().uniformX();
-        table.row().pad(11,0,11,0);
+        table.add(save1).width(980); // adds the textbutton to the table and sets the size of the save1 textbutton
+        table.row().pad(11,0,11,0); // adds a space under the save1 button, the size of the pad is determined 
+        table.add(save2).fillX().uniformX();  // adds save2 textbutton and fills the table in the x direction 
+        table.row();   // a new row is created
+        table.add(save3).fillX().uniformX();  
+        table.row().pad(11,0,11,0); 
         table.add(newSave).fillX().uniformX();
 
-        save1.addListener(new ChangeListener() {
+        save1.addListener(new ChangeListener() { // ChangeListener is used to detect that a change will be made when the textbutton save1 is pressed
             @Override
-            public void changed(ChangeListener.ChangeEvent event, Actor actor) {
-                parent.changeScreen(Blub_Blub.PLAY);
+            public void changed(ChangeListener.ChangeEvent event, Actor actor) { 
+                parent.changeScreen(Blub_Blub.PLAY); // when the button is clicked, the screen changes
             }
         });
 
@@ -59,16 +59,16 @@ public class SaveScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.9F, 0.9F, 0.9F, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(0.9F, 0.9F, 0.9F, 1); // determines background color of the screen
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);  // clears the color used in the precious screen
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // helps with the timing of the actors in the stage in this case the table
+        stage.draw();  // used to call the table to the stage (stage could be seen to be the same as a screen
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
+        stage.getViewport().update(width, height, true);  // updates the size of the stage
 
     }
 
@@ -89,6 +89,6 @@ public class SaveScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
+        stage.dispose(); // gets rid of the state/screen
     }
 }
