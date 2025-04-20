@@ -12,7 +12,7 @@ import com.blub.Screens.SaveScreen;
 
 
 public class  Blub_Blub extends Game {
-    public static final int WIDTH = 1080;
+    public static final int WIDTH = 1080; 
     public static final int HEIGHT = 1080;
 
     public SpriteBatch batch;
@@ -26,11 +26,12 @@ public class  Blub_Blub extends Game {
     private SaveScreen saveScreen;
     private PetScreen petScreen;
 
-    public final static int MENU = 0;
-    public final static int PAUSE = 1;
-    public final static int PET = 2;
-    public final static int SOUND = 3;
-    public final static int SAVE = 4;
+    // different screens are assigned to numbers
+    public final static int MENU = 0; 
+    public final static int PAUSE = 1; 
+    public final static int PET = 2; 
+    public final static int SOUND = 3; // this line is not really needed since there is no different screen for sound
+    public final static int SAVE = 4; 
 
 
     @Override
@@ -47,26 +48,26 @@ public class  Blub_Blub extends Game {
 
 
         batch = new SpriteBatch();
-        setScreen(new MainMenuScreen(this));
+        setScreen(new MainMenuScreen(this)); 
 
     }
-    public void changeScreen(int screen){
+    public void changeScreen(int screen){ // switchcase used to change screens 
         switch(screen){
             case MENU:
-                if(mainMenuScreen == null) mainMenuScreen = new MainMenuScreen(this);
-                this.setScreen(mainMenuScreen);
-                break;
-            case PAUSE:
-                if(pauseMenuScreen == null) pauseMenuScreen = new PauseMenuScreen(this);
-                this.setScreen(pauseMenuScreen);
+                if(mainMenuScreen == null) mainMenuScreen = new MainMenuScreen(this); // if there is no mainMenuScreen then a new MainMenuScreen is created
+                this.setScreen(mainMenuScreen); // the screen is set to main menu screen
+                break; 
+            case PAUSE: 
+                if(pauseMenuScreen == null) pauseMenuScreen = new PauseMenuScreen(this); // if there is no pauseMenuScreen then a new PauseMenuScreen is created
+                this.setScreen(pauseMenuScreen); // the screen is set to pause menu screen
                 break;
             case PET:
-                if(petScreen == null) petScreen = new PetScreen(this);
-                this.setScreen(petScreen);
+                if(petScreen == null) petScreen = new PetScreen(this);  // if there is no petScreen then a new PetScreen is created
+                this.setScreen(petScreen);  // the screen is set to pet screen
                 break;
             case SAVE:
-                if(saveScreen == null) saveScreen = new SaveScreen(this);
-                this.setScreen(saveScreen);
+                if(saveScreen == null) saveScreen = new SaveScreen(this);  // if there is no saveScreen then a new SaveScreen is created
+                this.setScreen(saveScreen); // the screen is set to save screen
                 break;
         }
     }
