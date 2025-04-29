@@ -1,7 +1,9 @@
 package com.blub.Screens;
 
-
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.blub.Blub_Blub;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,87 +11,102 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.blub.Blub_Blub;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 
+/** First screen of the application. Displayed after the application is created. */
 public class PauseMenuScreen implements Screen {
     private final Blub_Blub parent;
     private final Stage stage;
+    private int previousScreen; //Store the previous screen value
 
 
-    public PauseMenuScreen(Blub_Blub blub_blub) {
+    public PauseMenuScreen(Blub_Blub blub_blub, int previousScreen) {
         parent = blub_blub;
+        this.previousScreen = previousScreen;
 
-        stage = new Stage(new ScreenViewport()); // a new stage is created 
-        Gdx.input.setInputProcessor(stage); 
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
 
 
     }
     @Override
     public void show() {
-        Table table = new Table(); // a new table is created
-        table.setSize(2000,1000); // the table size is set
-        table.setFillParent(true); // used to size the root table to the stage
-        table.setDebug(true); // provides lines to be able to see the alignment from the table, is not necessary just used for debugging 
-        stage.addActor(table); // adds the table as an actor, who will be acting in the stage
+        Table table = new Table();
+        table.setSize(2000,1000);
+        table.setFillParent(true);
+        table.setDebug(true);
+        stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("Skin/glassy-ui.json")); // creates a new Skin which accepts a json file. The json file contains buttons that could be used for the UI
+        Skin skin = new Skin(Gdx.files.internal("skin2/plain.json"));
 
-        TextButton exit = new TextButton("EXIT", skin); //creates text buttons using the skin from the json file, and and writes text over button, in this case it writes EXIT
+        TextButton exit = new TextButton("EXIT", skin);
         TextButton menu = new TextButton("MENU", skin);
         TextButton save = new TextButton("SAVE", skin);
         TextButton resume = new TextButton("RESUME", skin);
+        TextButton soundPreference = new TextButton("SOUND PREFERENCE", skin);
 
-        table.add(resume).width(980); // adds the textbutton to the table and sets the size of the resume textbutton
-        table.row().pad(11,0,11,0); // adds a space under resume textbutton, the size of the pad is determined 
-        table.add(save).fillX().uniformX();  // adds save textbutton and fills the table with the button in the x direction 
-        table.row(); 
+
+        table.add(resume).width(980);
+        table.row().pad(11,0,11,0);
+        table.add(save).fillX().uniformX();
+        table.row();
         table.add(menu).fillX().uniformX();
         table.row().pad(11,0,11,0);
+        table.add(soundPreference).fillX().uniformX();
+        table.row();
         table.add(exit).fillX().uniformX();
 
 
-        exit.addListener(new ChangeListener() { // ChangeListener is used to detect that a change will be made when the textbutton exit is pressed
+        exit.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit(); // when the button is clicked, the user exits the app
+                Gdx.app.exit();
             }
         });
 
-        resume.addListener(new ChangeListener() { // ChangeListener is used to detect that a change will be made when the textbutton resume is pressed
+        resume.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Blub_Blub.PLAY); // when the button is clicked, the screen changes
+                parent.changeScreen(previousScreen);
             }
         });
 
-        save.addListener(new ChangeListener() { // ChangeListener is used to detect that a change will be made when the textbutton save is pressed
+        save.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Blub_Blub.SAVE); // when the button is clicked, the screen changes
+                parent.changeScreen(Blub_Blub.SAVE);
             }
         });
-        menu.addListener(new ChangeListener() { // ChangeListener is used to detect that a change will be made when the textbutton menu is pressed
+        menu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(Blub_Blub.MENU); // when the button is clicked, the screen changes
+                parent.changeScreen(Blub_Blub.MENU);
             }
         });
+        soundPreference.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                parent.changeScreen(Blub_Blub.SOUND);
+            }
+        });
+
+
 
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0.9F, 0.9F, 0.9F, 1); // determines background color of the screen
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // clears the color used in the previous screen
+        Gdx.gl.glClearColor(0.9F, 0.9F, 0.9F, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f)); // helps with the timing of the actors in the stage in this case the table
-        stage.draw(); // used to call the table to the stage (stage could be seen to be the same as a screen
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true); // updates the size of the stage
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -109,8 +126,6 @@ public class PauseMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose(); // gets rid of the state/screen
+        stage.dispose();
     }
 }
-
-
