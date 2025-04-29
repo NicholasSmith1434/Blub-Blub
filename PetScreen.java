@@ -23,12 +23,11 @@ public class PetScreen implements Screen {
     Player player = new Player(); // added for leveling feature. could be changed for saving feature
     float xp = player.getExperience(); // used for leveling feature. when 1 it means enough experience
 
-    private static final float PAUSE_BUTTON_WIDTH = 80;
-    private static final float PAUSE_BUTTON_HEIGHT = 80;
+    private static final float BUTTON_WIDTH = 80;
+    private static final float BUTTON_HEIGHT = 80;
     private static final float ALIEN_WIDTH = 303;
     private static final float ALIEN_HEIGHT = 717;
-    private static final float BALL_BUTTON_WIDTH = 80;
-    private static final float BALL_BUTTON_HEIGHT = 80;
+
     float stateTime = 0;
 
     BitmapFont levelFont;
@@ -50,8 +49,7 @@ public class PetScreen implements Screen {
     Texture cleanButtonInactive;
     Texture feedButtonActive;
     Texture feedButtonInactive;
-    Texture ballButtonActive;
-    Texture ballButtonInactive;
+    Texture ballButton;
     //Pause Menu button
     Texture pauseButtonActive;
     Texture pauseButtonInactive;
@@ -80,8 +78,7 @@ public class PetScreen implements Screen {
         pauseButtonActive = new Texture(Gdx.files.internal("PauseButtonActive.png"));
         pauseButtonInactive = new Texture(Gdx.files.internal("Pause-Button-PNG.png"));
         backgroundTexture = new Texture("Blub_Blub_Background.png");
-        ballButtonActive = new Texture(Gdx.files.internal("ball.png"));
-        ballButtonInactive = new Texture(Gdx.files.internal("ball.png"));
+        ballButton = new Texture(Gdx.files.internal("ball.png"));
         progressBar = new Texture("progress-bar.png");
         levelFont = new BitmapFont(Gdx.files.internal("fonts/levelFont.fnt")); // used for level feature
     }
@@ -149,23 +146,24 @@ public class PetScreen implements Screen {
 //        } else {
 //            game.batch.draw(petIdle, 200, 100);
 //        }
+
         //Pause Button
         float pauseButtonX = Blub_Blub.WIDTH - 100;
         float pauseButtonY = Blub_Blub.HEIGHT - 130;
 
-        if (Gdx.input.getX() > pauseButtonX && Gdx.input.getX() < pauseButtonX + PAUSE_BUTTON_WIDTH &&
+        if (Gdx.input.getX() > pauseButtonX && Gdx.input.getX() < pauseButtonX + BUTTON_WIDTH &&
             Blub_Blub.HEIGHT - Gdx.input.getY() > pauseButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
-            < pauseButtonY + PAUSE_BUTTON_HEIGHT) {
+            < pauseButtonY + BUTTON_HEIGHT) {
 
-            game.batch.draw(pauseButtonActive, pauseButtonX, pauseButtonY, PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT);
+            game.batch.draw(pauseButtonActive, pauseButtonX, pauseButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
 
             //Pause button clicked
             if (Gdx.input.isTouched()) {
                 this.dispose();
-                game.setScreen(new PauseMenuScreen(game)); //Closes (exits) game
+                game.setScreen(new PauseMenuScreen(game)); //Closes (exits)
             }
         } else {
-            game.batch.draw(pauseButtonInactive, pauseButtonX, pauseButtonY, PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT);
+            game.batch.draw(pauseButtonInactive, pauseButtonX, pauseButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
         // Progress Bar
         game.batch.draw(progressBar, 0, 1040, (Blub_Blub.WIDTH * xp), 20);
@@ -177,25 +175,66 @@ public class PetScreen implements Screen {
 
 
         //ball game button
-//
-//        float BallGameButtonX = Blub_Blub.WIDTH - 100;
-//        float BallGameButtonY = Blub_Blub.HEIGHT - 300;
-//
-//        if (Gdx.input.getX() > BallGameButtonX && Gdx.input.getX() < BallGameButtonX + BALL_BUTTON_WIDTH &&
-//            Blub_Blub.HEIGHT - Gdx.input.getY() > BallGameButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
-//            < BallGameButtonY + BALL_BUTTON_HEIGHT) {
-//
-//            game.batch.draw(ballButtonActive, BallGameButtonX, BallGameButtonY, BALL_BUTTON_WIDTH, BALL_BUTTON_HEIGHT);
-//
-//            //Pause button clicked
-//            if (Gdx.input.isTouched()) {
-//                this.dispose();
-//                game.setScreen(new BallGameScreen(game)); //Closes (exits) game
-//            }
-//        }
-//        else {
-//            game.batch.draw(ballButtonInactive, BallGameButtonX, BallGameButtonY, BALL_BUTTON_WIDTH, BALL_BUTTON_HEIGHT);
-//        }
+
+        float BallGameButtonX = Blub_Blub.WIDTH - 100;
+        float BallGameButtonY = Blub_Blub.HEIGHT - 300;
+
+        if (Gdx.input.getX() > BallGameButtonX && Gdx.input.getX() < BallGameButtonX + BUTTON_WIDTH &&
+            Blub_Blub.HEIGHT - Gdx.input.getY() > BallGameButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
+            < BallGameButtonY + BUTTON_HEIGHT) {
+
+            game.batch.draw(ballButton, BallGameButtonX, BallGameButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+            //ball button clicked
+            if (Gdx.input.isTouched()) {
+                this.dispose();
+                game.setScreen(new BallScreen(game));  //Opens ball game
+            }
+        }
+        else {
+            game.batch.draw(ballButton, BallGameButtonX, BallGameButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
+
+        //cleaning game button
+        float CleaningGameButtonX = Blub_Blub.WIDTH - 100;
+        float CleaningGameButtonY = Blub_Blub.HEIGHT - 400;
+
+        if (Gdx.input.getX() > CleaningGameButtonX && Gdx.input.getX() < CleaningGameButtonX + BUTTON_WIDTH &&
+            Blub_Blub.HEIGHT - Gdx.input.getY() > CleaningGameButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
+            < CleaningGameButtonY + BUTTON_HEIGHT) {
+
+            game.batch.draw(ballButton, CleaningGameButtonX, CleaningGameButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+            //clean button clicked
+            if (Gdx.input.isTouched()) {
+                this.dispose();
+                game.setScreen(new HygieneScreen(game)); //Opens cleaning game
+            }
+        }
+        else {
+            game.batch.draw(ballButton, CleaningGameButtonX, CleaningGameButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
+
+
+        //feeding game button
+        float FeedingGameButtonX = Blub_Blub.WIDTH - 100;
+        float FeedingGameButtonY = Blub_Blub.HEIGHT - 500;
+
+        if (Gdx.input.getX() > FeedingGameButtonX && Gdx.input.getX() < FeedingGameButtonX + BUTTON_WIDTH &&
+            Blub_Blub.HEIGHT - Gdx.input.getY() > FeedingGameButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
+            < FeedingGameButtonY + BUTTON_HEIGHT) {
+
+            game.batch.draw(ballButton, FeedingGameButtonX, FeedingGameButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+
+            //feed button clicked
+            if (Gdx.input.isTouched()) {
+                this.dispose();
+                game.setScreen(new FeedScreen(game)); //Opens feeding game
+            }
+        }
+        else {
+            game.batch.draw(ballButton, FeedingGameButtonX, FeedingGameButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
 
         game.batch.end();
 
