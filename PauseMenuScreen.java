@@ -1,7 +1,5 @@
 package com.blub.Screens;
 
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.blub.Blub_Blub;
 import com.badlogic.gdx.Gdx;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 
 /** First screen of the application. Displayed after the application is created. */
@@ -23,7 +20,7 @@ public class PauseMenuScreen implements Screen {
 
     public PauseMenuScreen(Blub_Blub blub_blub, int previousScreen) {
         parent = blub_blub;
-        this.previousScreen = previousScreen;
+        this.previousScreen = previousScreen;   //Saves user previous screen for resume
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -38,15 +35,16 @@ public class PauseMenuScreen implements Screen {
         table.setDebug(true);
         stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("skin2/plain.json"));
+        Skin skin = new Skin(Gdx.files.internal("skin/glassy-ui.json"));
 
+        //Skins of buttons
         TextButton exit = new TextButton("EXIT", skin);
         TextButton menu = new TextButton("MENU", skin);
         TextButton save = new TextButton("SAVE", skin);
         TextButton resume = new TextButton("RESUME", skin);
         TextButton soundPreference = new TextButton("SOUND PREFERENCE", skin);
 
-
+        //Locations of buttons
         table.add(resume).width(980);
         table.row().pad(11,0,11,0);
         table.add(save).fillX().uniformX();

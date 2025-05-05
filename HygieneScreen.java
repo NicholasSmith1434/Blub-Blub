@@ -17,7 +17,6 @@ public class HygieneScreen implements Screen {
     float xp = player.getExperience();
     BitmapFont levelFont;
     int level = player.getLevel();
-    int cleaningCount;
 
     private static final float PAUSE_BUTTON_WIDTH = 80;
     private static final float PAUSE_BUTTON_HEIGHT = 80;
@@ -58,7 +57,6 @@ public class HygieneScreen implements Screen {
 
     public HygieneScreen(Blub_Blub game){
         this.game = game;
-//        cleaningCount = 0;
 
         // It's good practice to define constants for screen dimensions if used often
         // Or get them dynamically if the window can resize (using Gdx.graphics.getWidth/Height)
@@ -68,9 +66,9 @@ public class HygieneScreen implements Screen {
         levelFont = new BitmapFont(Gdx.files.internal("fonts/levelFont.fnt"));
         bathroom = new Texture(Gdx.files.internal("Bathroom.png"));
         pauseButton = new Texture(Gdx.files.internal("PauseButton.png"));
-        leaveButton = new Texture(Gdx.files.internal("Back_Arrow.png"));
+        leaveButton = new Texture(Gdx.files.internal("LeaveButton.png"));
         petBath = new Texture(Gdx.files.internal("AlienFellaBath.png"));
-        soap = new Texture(Gdx.files.internal("soap.png"));
+        soap = new Texture(Gdx.files.internal("SoapBar.png"));
         bubbles = new Texture(Gdx.files.internal("Bubbles.png"));
         placedBubbles = new ArrayList<>(); // Initialize the list
     }
@@ -103,10 +101,8 @@ public class HygieneScreen implements Screen {
             // Only get soapy if not already, or allow re-dipping to reset count
             soapy = true;
             soapCount = 5;
-            cleaningCount = 0;
             // Consider adding a sound effect for dipping game.playDipSound();
         }
-
 
         // Check for applying soap to pet (on click)
         boolean overPet = mouseX > PET_X_MIN && mouseX < PET_X_MAX &&
@@ -120,7 +116,6 @@ public class HygieneScreen implements Screen {
 
             placedBubbles.add(new Vector2(bubbleX, bubbleY)); // Store position
             soapCount--;
-            cleaningCount ++;
             // Consider adding a sound effect game.playBubbleSound();
 
             // Check if soap is used up *after* placing the last bubble
@@ -129,9 +124,9 @@ public class HygieneScreen implements Screen {
             }
         }
 
-
         // --- Drawing Logic ---
         game.batch.begin();
+
         // Background
         game.batch.draw(bathroom, 0, 0, Blub_Blub.WIDTH, Blub_Blub.HEIGHT); // Use constants/getters
 
@@ -143,16 +138,6 @@ public class HygieneScreen implements Screen {
             game.batch.draw(bubbles, bubblePos.x, bubblePos.y, 60, 60); // Draw stored bubbles
         }
 
-        if(cleaningCount == 5){
-            player.addExperience(0.3F);// then xp goes up, when xp goes up, we update experience from player using the Player.addExperience(0.1)
-         // level
-            player.levelUp();
-            level = player.getLevel();
-            cleaningCount = 0;
-        }
-        xp = player.getExperience();
-        game.batch.draw(progressBar, 0, 1040, (Blub_Blub.WIDTH * xp), 20);
-
         // Default Bubbles in toilet (visual flair)
         game.batch.draw(bubbles, 900, 355, 120, 120); // Adjust position if needed
 
@@ -162,8 +147,9 @@ public class HygieneScreen implements Screen {
         game.batch.draw(progressBar, 0, Blub_Blub.HEIGHT - 20, (Blub_Blub.WIDTH * xp), 20); // Adjust Y
 
         // Level Text
+        level = player.getLevel();
         GlyphLayout levelLayout = new GlyphLayout(levelFont,"LEVEL " + level);
-        levelFont.draw(game.batch, levelLayout,Blub_Blub.WIDTH/ 2 - levelLayout.width /2, Blub_Blub.HEIGHT - levelLayout.height - 30);
+        levelFont.draw(game.batch, levelLayout,Blub_Blub.WIDTH/ 2f - levelLayout.width / 2f, Blub_Blub.HEIGHT - levelLayout.height - 30); // Use floats for division
 
         // Pause Button
         float pauseButtonX = Blub_Blub.WIDTH - 100;
@@ -254,152 +240,3 @@ public class HygieneScreen implements Screen {
 //    public void playClick() { /* play sound */ }
 //    // ... other methods
 // }
-
-//package com.blub.Screens;
-//
-//import com.badlogic.gdx.Gdx;
-//import com.badlogic.gdx.Screen;
-//import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.BitmapFont;
-//import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-//import com.blub.Blub_Blub;
-//
-//public class HygieneScreen implements Screen {
-//    Blub_Blub game;
-//    Player player = new Player(); // added for leveling feature. could be changed for saving feature
-//    float xp = player.getExperience(); // used for leveling feature. when 1 it means enough experience points for a level up. experience resets to 0. level plus 1
-//    private static final float BUTTON_WIDTH = 80;
-//    private static final float BUTTON_HEIGHT = 80;
-//    BitmapFont levelFont;
-//    int level = player.getLevel(); // used for leveling feature, starts at 1
-//
-//    //Background
-//    Texture backgroundTexture;
-//    //Pause Menu button
-//    Texture pauseButtonActive;
-//    Texture pauseButtonInactive;
-//    //Throw Ball Button
-//    Texture cleanPetButton;
-//    //Back Button
-//    Texture backButton;
-//    //XP bar
-//    Texture progressBar;
-//
-//
-//
-//    public HygieneScreen(Blub_Blub game) {
-//        this.game = game;
-//        backButton = new Texture(Gdx.files.internal("Back_Arrow.png"));
-//        progressBar = new Texture("progress-bar.png");
-//        cleanPetButton = new Texture(Gdx.files.internal("soap.png"));
-//        levelFont = new BitmapFont(Gdx.files.internal("fonts/levelFont.fnt")); // used for level feature
-//        backgroundTexture = new Texture("Bathroom.png");
-//        pauseButtonActive = new Texture(Gdx.files.internal("PauseButtonActive.png"));
-//        pauseButtonInactive = new Texture(Gdx.files.internal("PauseButtonInactive.png"));
-//    }
-//    @Override
-//    public void show() {
-//
-//    }
-//
-//    @Override
-//    public void render(float delta) {
-//        game.batch.begin();
-//
-//        // background
-//        game.batch.draw(backgroundTexture, 0, 0, 1080, 1080);
-//
-//        //Pause Button
-//        float pauseButtonX = Blub_Blub.WIDTH - 100;
-//        float pauseButtonY = Blub_Blub.HEIGHT - 130;
-//
-//        if (Gdx.input.getX() > pauseButtonX && Gdx.input.getX() < pauseButtonX + BUTTON_WIDTH &&
-//            Blub_Blub.HEIGHT - Gdx.input.getY() > pauseButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
-//            < pauseButtonY + BUTTON_HEIGHT) {
-//
-//            game.batch.draw(pauseButtonActive, pauseButtonX, pauseButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
-//
-//            //Pause button clicked
-//            if (Gdx.input.isTouched()) {
-//                this.dispose();
-//                game.setScreen(new PauseMenuScreen(game, Blub_Blub.HYGIENE)); //Closes (exits)
-//            }
-//        } else {
-//            game.batch.draw(pauseButtonInactive, pauseButtonX, pauseButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
-//        }
-//
-//        //Back Button
-//        float backButtonX = Blub_Blub.WIDTH - 1050;
-//        float backButtonY = Blub_Blub.HEIGHT - 130;
-//
-//        if (Gdx.input.getX() > backButtonX && Gdx.input.getX() < backButtonX + BUTTON_WIDTH &&
-//            Blub_Blub.HEIGHT - Gdx.input.getY() > backButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
-//            < backButtonY + BUTTON_HEIGHT) {
-//
-//            game.batch.draw(backButton, backButtonX, backButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
-//
-//            //Back button clicked
-//            if (Gdx.input.isTouched()) {
-//                this.dispose();
-//                game.setScreen(new PetScreen(game)); //Closes (exits)
-//            }
-//        } else {
-//            game.batch.draw(backButton, backButtonX, backButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
-//        }
-//        // Clean Pet
-//        float cleanButtonX = Blub_Blub.WIDTH - 1000;
-//        float cleanButtonY = Blub_Blub.HEIGHT - 1000;
-//
-//        if (Gdx.input.getX() > cleanButtonX && Gdx.input.getX() < cleanButtonX + BUTTON_WIDTH &&
-//            Blub_Blub.HEIGHT - Gdx.input.getY() > cleanButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
-//            < cleanButtonY + BUTTON_HEIGHT) {
-//
-//            game.batch.draw(cleanPetButton, cleanButtonX, cleanButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
-//
-//            //Clean Pet when button clicked
-//            if (Gdx.input.isTouched()) { // if feed button clicked
-//                player.addExperience(0.1F);// then xp goes up, when xp goes up, we update experience from player using the Player.addExperience(0.1)
-//                xp = player.getExperience();
-//                game.batch.draw(progressBar, 0, 1040, (Blub_Blub.WIDTH * xp), 20);
-//            }
-//        } else {
-//            game.batch.draw(cleanPetButton, cleanButtonX, cleanButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
-//        }
-//
-//
-//        // Progress Bar
-//        game.batch.draw(progressBar, 0, 1040, (Blub_Blub.WIDTH * xp), 20);
-//
-//        // level
-//        player.levelUp();
-//        level = player.getLevel();
-//        GlyphLayout levelLayout = new GlyphLayout(levelFont,"LEVEL " + level);
-//        levelFont.draw(game.batch, levelLayout,Blub_Blub.WIDTH/ 2 - levelLayout.width /2, Blub_Blub.HEIGHT - levelLayout.height - 30);
-//        game.batch.end();
-//    }
-//
-//    @Override
-//    public void resize(int width, int height) {
-//        // Resize your screen here. The parameters represent the new window size.
-//    }
-//
-//    @Override
-//    public void pause() {
-//        // Invoked when your application is paused.
-//    }
-//
-//    @Override
-//    public void resume() {
-//        // Invoked when your application is resumed after pause.
-//    }
-//
-//    @Override
-//    public void hide() {
-//        // This method is called when another screen replaces this one.
-//    }
-//
-//    @Override
-//    public void dispose() {
-//        // Destroy screen's assets here.
-//    }
-//}

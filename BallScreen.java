@@ -5,21 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.blub.Blub_Blub;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-
-
-
 
 public class BallScreen implements Screen {
     OrthographicCamera camera;
@@ -48,7 +39,7 @@ public class BallScreen implements Screen {
     BitmapFont scoreFont;
     int level = player.getLevel(); // used for leveling feature, starts at 1
     //Going Back Button
-    Texture backButton;
+    Texture leaveButton;
     //XP bar
     Texture progressBar;
     //counter
@@ -73,7 +64,7 @@ public class BallScreen implements Screen {
         ball.setPosition(x, y);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1080, 1080);
-        backButton = new Texture(Gdx.files.internal("Back_Arrow.png"));
+        leaveButton = new Texture(Gdx.files.internal("LeaveButton.png"));
         progressBar = new Texture("progress-bar.png");
         levelFont = new BitmapFont(Gdx.files.internal("fonts/levelFont.fnt")); // used for level feature
         scoreFont = new BitmapFont(Gdx.files.internal("fonts/levelFont.fnt")); // used for level feature
@@ -188,7 +179,7 @@ public class BallScreen implements Screen {
             Blub_Blub.HEIGHT - Gdx.input.getY() > backButtonY && Blub_Blub.HEIGHT - Gdx.input.getY()
             < backButtonY + BUTTON_HEIGHT) {
 
-            game.batch.draw(backButton, backButtonX, backButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(leaveButton, backButtonX, backButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
 
             //Back button clicked
             if (Gdx.input.isTouched()) {
@@ -196,7 +187,7 @@ public class BallScreen implements Screen {
                 game.setScreen(new PetScreen(game)); //Closes (exits)
             }
         } else {
-            game.batch.draw(backButton, backButtonX, backButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(leaveButton, backButtonX, backButtonY, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
 
         // Progress Bar

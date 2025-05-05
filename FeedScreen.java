@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.blub.Blub_Blub;
 import com.badlogic.gdx.math.Rectangle; // Import Rectangle for area checking
-import com.blub.Screens.Player;
 
 public class FeedScreen implements Screen {
     Blub_Blub game;
