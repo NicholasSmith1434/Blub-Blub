@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -52,9 +50,6 @@ public class PetScreen implements Screen {
     Texture pauseButton;
     //Background
     Texture backgroundTexture;
-    SpriteBatch batch;
-    Texture alienWalkSheet;
-    TextureRegion[] animationFrames;
     float elaspedTime;
     //XP bar
     Texture progressBar;
@@ -70,7 +65,7 @@ public class PetScreen implements Screen {
         backgroundTexture = new Texture("Blub_Blub_Background.png");
         ballButton = new Texture("ball.png");
         hygieneButton = new Texture(Gdx.files.internal("soap.png"));
-        feedButton = new Texture(Gdx.files.internal("PauseButton.png"));
+        feedButton = new Texture(Gdx.files.internal("bread.png"));
         progressBar = new Texture("progress-bar.png");
         levelFont = new BitmapFont(Gdx.files.internal("fonts/levelFont.fnt")); // used for level feature
     }
@@ -85,10 +80,11 @@ public class PetScreen implements Screen {
     public void render(float v) {
         elaspedTime += Gdx.graphics.getDeltaTime();
         game.batch.begin();
-        // background
+
+        //Background
         game.batch.draw(backgroundTexture, 0, 0, 1080, 1080);
 
-        int baseSpeed = 5;
+        int baseSpeed = 2;
 
         // Only move if allowed
         if (isMoving) {
@@ -152,7 +148,8 @@ public class PetScreen implements Screen {
             //Pause button clicked
             if (Gdx.input.isTouched()) {
                 this.dispose();
-                game.setScreen(new PauseMenuScreen(game, Blub_Blub.PET)); //Closes (exits) game
+                game.playClick();
+                game.setScreen(new PauseMenuScreen(game, Blub_Blub.PET)); //Sends current screen to Pause for saving
             }
         } else {
             game.batch.draw(pauseButton, pauseButtonX, pauseButtonY, PAUSE_BUTTON_WIDTH, PAUSE_BUTTON_HEIGHT);
@@ -180,6 +177,7 @@ public class PetScreen implements Screen {
             //Pause button clicked
             if (Gdx.input.isTouched()) {
                 this.dispose();
+                game.playClick();
                 game.setScreen(new BallScreen(game)); //Closes (exits) game
             }
         } else {
