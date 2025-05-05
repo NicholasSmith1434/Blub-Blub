@@ -8,10 +8,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.blub.Blub_Blub;
 import com.badlogic.gdx.math.Rectangle; // Import Rectangle for area checking
+import com.blub.Screens.Player;
 
 public class FeedScreen implements Screen {
     Blub_Blub game;
-    Player player = new Player(); // Make sure this Player class has addExperience and levelUp methods
+
+    Player player = new Player();
     float xp = player.getExperience();
     BitmapFont levelFont;
     int level = player.getLevel();
@@ -28,6 +30,7 @@ public class FeedScreen implements Screen {
     Texture petNormal; // Renamed for clarity
     Texture petEat;    // Texture for eating animation
     Texture foodItem;  // Texture for the food
+    Texture kitchen;
 
     // Game State Variables
     private boolean isHoldingFood = false;
@@ -67,16 +70,18 @@ public class FeedScreen implements Screen {
         // Load pet textures
         petNormal = new Texture(Gdx.files.internal("Alien Fella Front.png"));
         // Make sure this is the correct eating animation texture
-        petEat = new Texture(Gdx.files.internal("Alien Fella Back.png"));
+        petEat = new Texture(Gdx.files.internal("alienFeed.png"));
 
         // Load food texture
         // Using SoapBar as food based on your previous code, change if needed
-        foodItem = new Texture(Gdx.files.internal("SoapBar.png"));
+        foodItem = new Texture(Gdx.files.internal("bread.png"));
 
         // Define clickable areas using Rectangles
         // These automatically use the updated FOOD_START_Y and PET_DRAW_Y constants
         foodArea = new Rectangle(FOOD_START_X, FOOD_START_Y, FOOD_ITEM_WIDTH, FOOD_ITEM_HEIGHT);
         petArea = new Rectangle(PET_DRAW_X, PET_DRAW_Y, PET_CLICK_WIDTH, PET_CLICK_HEIGHT);
+
+        kitchen = new Texture(Gdx.files.internal("KitchenBackground.jpg"));
     }
 
     @Override
@@ -163,6 +168,8 @@ public class FeedScreen implements Screen {
 
         game.batch.begin();
 
+        game.batch.draw(kitchen, 0,0,1080,1080);
+
         // Draw Pet - Choose texture based on eating state
         // Drawn at the updated PET_DRAW_Y
         if (isPetEating) {
@@ -222,9 +229,4 @@ public class FeedScreen implements Screen {
         petEat.dispose();
         foodItem.dispose();
     }
-
-    // --- Placeholder/Dummy classes (Ensure you have your actual classes) ---
-    // (Player, Blub_Blub, PauseMenuScreen, PetScreen)
-    // ... (Keep the dummy classes from the previous example if needed for testing)
-
 }
