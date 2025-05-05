@@ -34,7 +34,7 @@ public class MainMenuScreen implements Screen {
         playButtonInactive = new Texture(Gdx.files.internal("PlayButtonInactive.png"));
         exitButtonActive = new Texture(Gdx.files.internal("ExitButtonActive.png"));
         exitButtonInactive = new Texture(Gdx.files.internal("ExitButtonInactive.png"));
-        title = new Texture(Gdx.files.internal("BlubBlubTitle.png"));
+        title = new Texture(Gdx.files.internal("blub_blub_logo.png"));
     }
 
     @Override
@@ -76,7 +76,7 @@ public class MainMenuScreen implements Screen {
 
             //Exit button clicked
             if (Gdx.input.isTouched()) {
-                game.playClick();
+               game.playClick();
                 this.dispose();
                 game.batch.end();
                 Gdx.app.exit(); //Closes (exits) game
@@ -100,7 +100,7 @@ public class MainMenuScreen implements Screen {
             if (Gdx.input.isTouched()) {
                 this.dispose();
                 game.playClick();
-                game.setScreen(new PetScreen(game));
+                game.setScreen(new ChoosePetScreen(game));
             }
         } else {
             game.batch.draw(playButtonInactive, playButtonX, playButtonY, PLAY_BUTTON_WIDTH, PLAY_BUTTON_HEIGHT);

@@ -5,13 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.blub.Screens.MainMenuScreen;
-import com.blub.Screens.PetScreen;
-import com.blub.Screens.PauseMenuScreen;
-import com.blub.Screens.SaveScreen;
-import com.blub.Screens.BallScreen;
-import com.blub.Screens.HygieneScreen;
-import com.blub.Screens.FeedScreen;
+import com.blub.Screens.*;
 
 public class Blub_Blub extends Game {
 
@@ -24,6 +18,8 @@ public class Blub_Blub extends Game {
     public static Music backgroundMusic;
     public static Sound click;
     public static Sound jump;
+    public static Sound bounce;
+    public static Sound bite;
 
     //private PauseSettings pauseSettings;
     private MainMenuScreen mainMenuScreen;
@@ -33,15 +29,19 @@ public class Blub_Blub extends Game {
     private BallScreen ballScreen;
     private HygieneScreen hygieneScreen;
     private FeedScreen feedScreen;
+    private GameOverScreen gameOverScreen;
+    private ChoosePetScreen choosePetScreen;
 
     public final static int MENU = 0;
     public final static int PAUSE = 1;
-    public final static int PET = 2;
-    public final static int SAVE = 3;
-    public final static int BALL = 4;
-    public final static int HYGIENE = 5;
-    public final static int FEED = 6;
-    public final static int SOUND = 7;
+    public final static int CHOOSE = 2;
+    public final static int PET = 3;
+    public final static int SAVE = 4;
+    public final static int BALL = 5;
+    public final static int HYGIENE = 6;
+    public final static int FEED = 7;
+    public final static int SOUND = 8;
+    public final static int GAMEOVER = 10;
 
     //Loads Main Menu off the start
     @Override
@@ -55,6 +55,7 @@ public class Blub_Blub extends Game {
         //Load SFXs
         click = Gdx.audio.newSound(Gdx.files.internal("click.mp3"));
         jump = Gdx.audio.newSound(Gdx.files.internal("boing.mp3"));
+        bounce = Gdx.audio.newSound(Gdx.files.internal("ballbounce.mp3"));
 
         batch = new SpriteBatch();
         setScreen(new MainMenuScreen(this));
@@ -73,6 +74,10 @@ public class Blub_Blub extends Game {
             case PAUSE:
                 if(pauseMenuScreen == null) pauseMenuScreen = new PauseMenuScreen(this, screen); // if there is no pauseMenuScreen then a new PauseMenuScreen is created
                 this.setScreen(pauseMenuScreen); // the screen is set to pause menu screen
+                break;
+            case CHOOSE:
+                if(choosePetScreen == null) choosePetScreen = new ChoosePetScreen(this);
+                this.setScreen(choosePetScreen);
                 break;
             case PET:
                 if(petScreen == null) petScreen = new PetScreen(this);  // if there is no petScreen then a new PetScreen is created
@@ -94,6 +99,10 @@ public class Blub_Blub extends Game {
                 if(feedScreen == null) feedScreen = new FeedScreen(this);
                 this.setScreen(feedScreen);
                 break;
+            case GAMEOVER:
+                if(gameOverScreen == null) gameOverScreen = new GameOverScreen(this);
+                this.setScreen(gameOverScreen);
+                break;
         }
     }
 
@@ -104,6 +113,14 @@ public class Blub_Blub extends Game {
     public void playJump(){
         long id = jump.play(1.0f);
         jump.setPitch(id, 1.5f);
+    }
+    public void playBounce (){
+        long id = bounce.play(1.0f);
+        bounce.setPitch(id, 1.5f);
+    }
+    public void playBite(){
+        long id = bite.play(1.0f);
+        bite.setPitch(id, 1.5f);
     }
 
     @Override
@@ -118,6 +135,7 @@ public class Blub_Blub extends Game {
         jump.dispose();
         click.dispose();
         batch.dispose();
+        bounce.dispose();
     }
 }
 
