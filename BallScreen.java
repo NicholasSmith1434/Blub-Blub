@@ -64,7 +64,7 @@ public class BallScreen implements Screen {
         ball = new Sprite(new Texture("ball.png"));
         backgroundTexture = new Texture("outdoorBackground.png");
         pauseButton = new Texture(Gdx.files.internal("PauseButton.png"));
-        petAura = new Sprite(new Texture("alienAura.png"));
+        petAura = new Sprite(new Texture("Alien Fella Front.png"));
         petAuraHitbox = new Rectangle();
         ballHitbox = new Rectangle();
         spritex = 0;
@@ -101,7 +101,7 @@ public class BallScreen implements Screen {
         // Update position
         x += xSpeed;
         y += ySpeed;
-        }
+    }
 
 
 
@@ -133,6 +133,14 @@ public class BallScreen implements Screen {
                 xSpeed *=-1;
                 game.playBounce();
                 clickCount++;
+            }
+            if(clickCount % 10 == 0 && clickCount != 0){
+                player.addExperience(0.1F);// then xp goes up, when xp goes up, we update experience from player using the Player.addExperience(0.1)
+                xp = player.getExperience();
+                game.batch.draw(progressBar, 0, 1040, (Blub_Blub.WIDTH * xp), 20);
+                // level
+                player.levelUp();
+                level = player.getLevel();
             }
             //debugging
             System.out.println(touchPos + "touched");
@@ -194,18 +202,18 @@ public class BallScreen implements Screen {
         // Progress Bar
         game.batch.draw(progressBar, 0, 1040, (Blub_Blub.WIDTH * xp), 20);
 
-        // level
-        level = player.getLevel();
+
         GlyphLayout levelLayout = new GlyphLayout(levelFont,"LEVEL " + level);
         levelFont.draw(game.batch, levelLayout,Blub_Blub.WIDTH/ 2 - levelLayout.width /2, Blub_Blub.HEIGHT - levelLayout.height - 30);
+
+
 
         game.batch.end();
         if (!gameOver && ballHitbox.overlaps(petAuraHitbox)) {
             gameOver = true;
+            clickCount = 0;
             game.setScreen(new GameOverScreen(game));
         }
-
-
     }
 
 
@@ -231,5 +239,6 @@ public class BallScreen implements Screen {
 
     @Override
     public void dispose() {
+        game.batch.dispose();
     }
 }
